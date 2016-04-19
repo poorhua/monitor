@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinamobile.iot.monitor.dao.NodeDao">
+    <!-- type映射的类名，id后面设置resultMap时用到，表示结果对应哪个类型的映射关系 -->
+    <!-- 注：如果表中列名与类的属性名一致，且类按javaBean规范构造，映射关系可省略，具体原因可参考java的反射原理 -->
+
+    <select id="selectNodes" resultType="Node">
+        select NodeId as id, Name, ApiKey, StreamId, ExtractFreq, LastExtractTime, Descr, Status from Node
+    </select>
+
+    <select id="selectNode" resultType="Node">
+        select NodeId as id, Name, ApiKey, StreamId, ExtractFreq, LastExtractTime, Descr, Status from Node where
+        NodeId=#{id};
+    </select>
+
+    <update id="updateLastReqTime">
+        update Node SET LastExtractTime=#{time} where NodeId=#{id};
+    </update>
+
+    <select id="selectMidTargets" resultType="MiddleTarget">
+        select name, expression from middle_target_conf;
+    </select>
+
+    <select id="selectMidTarget" resultType="MiddleTarget">
+        select name, expression from middle_target_conf where name=#{name};
+    </select>
+
+    <select id="selectTargets" resultType="Target">
+        select targetId, name, expression, period, descr from target_conf;
+    </select>
+
+    <select id="selectTarget" resultType="Target">
+        select targetId, name, expression, period, descr from target_conf where name=#{name};
+    </select>
+
+    <select id="selectNodeTarget" resultType="String">
+        select B.name from node_target A, target_conf B where A.NodeId=#{id} and A.TargetId=B.TargetId;
+    </select>
+
+    <select id="selectNodeTargets" resultType="NodeTarget">
+        select A.nodeId, B.name as targetName from node_target A, target_conf B where A.TargetId=B.TargetId;
+    </select>
+
+    <insert id="insertTargetRecord" parameterType="TargetRecord">
+        insert into target_record(NodeId, TargetName, Result, Time) value(#{nodeId}, #{targetName}, #{result}, #{time});
+    </insert>
+
+    <select id="selectMaxDate" resultType="Date">
+        select max(TIME) as Date from target_record where NodeId=#{id} and TargetName=#{name};
+    </select>
+</mapper>

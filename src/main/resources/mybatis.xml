@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration  PUBLIC "-//ibatis.apache.org//DTD Config 3.1//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+<configuration>
+    <!-- 设置类的别名，如果不设置，在使用类型的地方需要把包的路径也加上 , 注：别名设置要放在environments前面 -->
+    <typeAliases>
+        <typeAlias alias="Node" type="com.chinamobile.iot.monitor.model.Node"/>
+        <typeAlias alias="Target" type="com.chinamobile.iot.monitor.model.Target"/>
+        <typeAlias alias="MiddleTarget" type="com.chinamobile.iot.monitor.model.MiddleTarget"/>
+        <typeAlias alias="TargetRecord" type="com.chinamobile.iot.monitor.model.TargetRecord"/>
+        <typeAlias alias="NodeTarget" type="com.chinamobile.iot.monitor.model.NodeTarget"/>
+    </typeAliases>
+
+
+    <!-- 如果没有在调用的时候 没有指定数据库环境时，默认创建连接id=development数据库环境的session -->
+    <environments default="development">
+        <!-- 开发环境数据  -->
+        <environment id="development">
+            <transactionManager type="jdbc"></transactionManager>
+            <dataSource type="pooled">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url"
+                          value="jdbc:mysql://localhost:3306/monitor?useSSL=false&amp;characterEncoding=utf8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="lvlv"/>
+            </dataSource>
+        </environment>
+
+        <!-- 生产环境数据  -->
+        <environment id="product">
+            <transactionManager type="jdbc"></transactionManager>
+            <dataSource type="pooled">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://127.0.0.1:3306/world"/>
+                <property name="username" value="root"/>
+                <property name="password" value="cdyanfa"/>
+            </dataSource>
+        </environment>
+
+        <!-- 备用环境数据  -->
+        <environment id="other">
+            <transactionManager type="jdbc"></transactionManager>
+            <dataSource type="pooled">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://110.110.110.110:3306/world"/>
+                <property name="username" value="root"/>
+                <property name="password" value="cdyanfa"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- SQL映射文件 -->
+    <mappers>
+        <mapper resource="mappers/NodeMapper.xml"/>
+    </mappers>
+</configuration>
