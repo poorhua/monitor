@@ -19,6 +19,14 @@ public class RabbitConfiguration {
      * 使能标志，表示是否把数据发给RabbitMQ
      */
     private boolean enable;
+    /**
+     * 连接RabbitMQ的用户名
+     */
+    private String user;
+    /**
+     * 连接RabbitMQ的密码
+     */
+    private String password;
 
     public String getHost() {
         return host;
@@ -42,5 +50,21 @@ public class RabbitConfiguration {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

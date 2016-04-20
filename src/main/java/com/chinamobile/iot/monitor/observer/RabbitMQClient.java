@@ -37,12 +37,6 @@ public class RabbitMQClient implements NewTargetObserver {
     @Autowired
     private MonitorConfiguration config;
 
-//    @Bean
-//    RabbitMQClientConfiguration getConfig() {
-//        return new RabbitMQClientConfiguration();
-//    }
-
-
     @PostConstruct
     public void init() {
         if (!config.getRabbit().isEnable()) {
@@ -54,6 +48,8 @@ public class RabbitMQClient implements NewTargetObserver {
             ConnectionFactory factory = new ConnectionFactory();
             factory.setHost(config.getRabbit().getHost());
             factory.setPort(config.getRabbit().getPort());
+            factory.setUsername(config.getRabbit().getUser());
+            factory.setPassword(config.getRabbit().getPassword());
             factory.setAutomaticRecoveryEnabled(true);
             connection = factory.newConnection();
             channel = connection.createChannel();
