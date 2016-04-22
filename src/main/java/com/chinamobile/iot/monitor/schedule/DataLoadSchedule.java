@@ -83,7 +83,7 @@ public class DataLoadSchedule {
     /**
      * 每分钟执行一次
      */
-    @Scheduled(fixedDelay = 5000, initialDelay = 2000)
+    @Scheduled(fixedDelay = 10000, initialDelay = 2000)
     public void run() {
         // 与数据库里的配置对齐
         checkConfig();
@@ -112,6 +112,9 @@ public class DataLoadSchedule {
      */
     @PostConstruct
     private void init() {
+
+
+
         logger.info("begin init schedule...");
         StopWatch watch = new StopWatch("init");
         watch.start();
@@ -124,7 +127,6 @@ public class DataLoadSchedule {
             exp.init(middle.getName(), middle.getExpression());
             middleMap.put(middle.getName(), exp);
         }
-
 
         // 构造指标Hash表，名称-->表达式
         List<Target> targets = dao.selectTargets();

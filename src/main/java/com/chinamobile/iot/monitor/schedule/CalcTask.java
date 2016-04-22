@@ -6,6 +6,7 @@ import com.chinamobile.iot.monitor.model.TargetRecord;
 import com.chinamobile.iot.monitor.script.Expression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StopWatch;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -56,6 +57,8 @@ public class CalcTask implements Runnable {
     }
 
     public void run() {
+        StopWatch watch = new StopWatch();
+        watch.start();
         // 1 从设备云提取数据
         logger.info("begin process device {}, start time: {}", nodeId, startTime);
 
@@ -63,7 +66,7 @@ public class CalcTask implements Runnable {
         List<DeviceDataPoint> datas = loader.loadData(nodeId, apiKey, startTime, null);
         if (datas == null) {
             config.deviceStatMap.remove(nodeId);
-            logger.info("load data failed!");
+            logger.info("there is no data of device {} to be processed!", nodeId);
             return;
         }
         logger.info("load data from OneNET ok!");
@@ -186,7 +189,9 @@ public class CalcTask implements Runnable {
         }
 
         config.deviceStatMap.remove(nodeId);
-        logger.info("process device completed! deviceID: {}, start time: {}", nodeId, startTime);
+        watch.stop();
+        long timeused = watch.getLastTaskTimeMillis();
+        logger.info("process device completed! deviceID: {}, start time: {}, used {} ms", nodeId, startTime, timeused);
 
         return;
     }

@@ -13,9 +13,12 @@ import com.chinamobile.onenet.sdk.entity.DataStream;
 import com.chinamobile.onenet.sdk.entity.SearchDataPointReq;
 import com.chinamobile.onenet.sdk.entity.SearchDataPointRsp;
 import com.chinamobile.onenet.sdk.request.SearchDataPointRequest;
+import com.rabbitmq.tools.json.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.retry.policy.ExceptionClassifierRetryPolicy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -128,13 +131,12 @@ public class OneNETDataLoader implements DataLoader {
                 dp.setDate(date);
                 // 把数据点的Value部分转换为MAP
                 String strResult = (String) (point.getValue());
-
                 Map<String, Object> map;
                 map = JSON.parseObject(strResult);
                 dp.setData(map);
                 result.add(dp);
-            } catch (ParseException e) {
-                logger.error("parse data error! date:{}", point.getAt());
+            } catch (Exception e) {
+                logger.error("parse data error! {}:{}", point.getAt(), point.getValue());
                 logger.error(e.getMessage());
             }
         }
