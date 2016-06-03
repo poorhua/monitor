@@ -13,16 +13,12 @@ import com.chinamobile.onenet.sdk.entity.DataStream;
 import com.chinamobile.onenet.sdk.entity.SearchDataPointReq;
 import com.chinamobile.onenet.sdk.entity.SearchDataPointRsp;
 import com.chinamobile.onenet.sdk.request.SearchDataPointRequest;
-import com.rabbitmq.tools.json.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JacksonJsonParser;
-import org.springframework.retry.policy.ExceptionClassifierRetryPolicy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.text.ParseException;
 import java.util.*;
 
 
@@ -60,7 +56,7 @@ public class OneNETDataLoader implements DataLoader {
     }
 
 
-    public List<DeviceDataPoint> loadData(String deviceId, String apiKey, Date start, Date end) {
+    public List<DeviceDataPoint> loadData(String deviceId, String apiKey, String streamId, Date start, Date end) {
 
         SearchDataPointRequest request = new SearchDataPointRequest();
         SearchDataPointReq req = new SearchDataPointReq();
@@ -79,7 +75,12 @@ public class OneNETDataLoader implements DataLoader {
         if (end != null) {
             req.setEnd(end);
         }
-        req.setDataStreamID(STREAM_ID);
+        if (streamId.isEmpty()) {
+            req.setDataStreamID(STREAM_ID);
+        } else {
+            req.setDataStreamID(streamId);
+        }
+
         /**
          * 默认一次从OneNET返回最大3600个节点
          */

@@ -50,6 +50,10 @@ public class CalcTask implements Runnable {
      * 本次提取数据的ApiKey
      */
     private String apiKey;
+    /**
+     * 提取数据的数据流ID
+     */
+    private String streamId;
     //////////////////////////////////////////////////////////////////
 
 
@@ -63,7 +67,7 @@ public class CalcTask implements Runnable {
         logger.info("begin process device {}, start time: {}", nodeId, startTime);
 
         Date maxDate = null;
-        List<DeviceDataPoint> datas = loader.loadData(nodeId, apiKey, startTime, null);
+        List<DeviceDataPoint> datas = loader.loadData(nodeId, apiKey, streamId, startTime, null);
         if (datas == null) {
             config.deviceStatMap.remove(nodeId);
             logger.info("there is no data of device {} to be processed!", nodeId);
@@ -246,6 +250,14 @@ public class CalcTask implements Runnable {
 
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
+    }
+
+    public String getStreamId() {
+        return streamId;
+    }
+
+    public void setStreamId(String streamId) {
+        this.streamId = streamId;
     }
 
     public CalConfig getConfig() {

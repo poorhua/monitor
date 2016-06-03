@@ -94,9 +94,11 @@ public class DataLoadSchedule {
             if (config.deviceStatMap.containsKey(node.getId())) {
                 continue;
             }
+
             CalcTask task = new CalcTask();
             task.setApiKey(node.getApiKey());
             task.setDeviceId(node.getId());
+            task.setStreamId(node.getStreamId());
             task.setStartTime(node.getLastExtractTime());
             task.setConfig(config);
             task.setLoader(loader);
@@ -112,7 +114,6 @@ public class DataLoadSchedule {
      */
     @PostConstruct
     private void init() {
-
 
 
         logger.info("begin init schedule...");

@@ -17,10 +17,10 @@ public interface DataLoader {
      *
      * @param deviceId 设备ID
      * @param apiKey   设备的ApiKey
+     * @param streamId 数据流Id
      * @param start    开始时间
-     * @param end      终止时间
-     * @return 数据点列表
+     * @param end      终止时间   @return 数据点列表
      */
-    List<DeviceDataPoint> loadData(String deviceId, String apiKey, Date start, Date end);
+    List<DeviceDataPoint> loadData(String deviceId, String apiKey, String streamId, Date start, Date end);
 
 }
