@@ -29,7 +29,7 @@ public class DataLoaderTest {
         start = cal.getTime();
         cal.set(2016, 2, 2);
         end = cal.getTime();
-        List<DeviceDataPoint> datas = dataLoader.loadData("768693", "oAyRbD5iUVLtafqIwy3B0uUjmJQA", start, end);
+        List<DeviceDataPoint> datas = dataLoader.loadData("768693", "oAyRbD5iUVLtafqIwy3B0uUjmJQA", "Picker", start, end);
         int i = 10;
     }
 
